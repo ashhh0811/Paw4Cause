@@ -1,0 +1,291 @@
+/* ======================
+    GLOBAL RESET
+====================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+:root {
+    /* Define colors used in the design */
+    --dark-green: #2a3d34;
+    --main-orange: #ff7b2f;
+    --light-text: #ffffff;
+    --input-bg: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    /* BACKGROUND IS SET IN HTML USING INLINE STYLES */
+    color: var(--light-text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    position: relative;
+    overflow: hidden;
+}
+
+/* ======================
+    HEADER / NAVIGATION
+====================== */
+header {
+    width: 100%;
+    height: 90px;
+    padding: 0 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    top: 0;
+    left: 0;
+    z-index: 150;
+}
+
+/* LOGO + TEXT */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    height: 28px;
+    width: auto;
+}
+
+.logo h2 {
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-size: 16px;
+}
+
+/* Vertical line separator next to logo text */
+.logo-divider {
+    height: 25px;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.4);
+    margin-left: 80px;
+    margin-right: 20px;
+}
+
+/* CENTER NAV LINKS */
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    gap: 180px;
+}
+
+nav ul li a { 
+    font-size: 15px;
+    color: #dadada;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    color: #ffffff;
+}
+
+/* ======================
+    LOGIN PAGE MAIN CONTENT (LOGO & FORM)
+====================== */
+.login-page-content {
+    /* This container holds the central elements over the golden glow */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    flex-grow: 1; 
+    padding-top: 90px; 
+    width: 100%;
+    max-width: 500px; 
+}
+
+.logo-area {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-top: 50px;
+}
+
+.logo-icon-circle {
+    width: 120px;
+    height: 120px;
+    background-color: var(--main-orange);
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.logo-icon-circle img {
+    /* Style for your actual dog logo image */
+    width: 80px; 
+    height: auto;
+    filter: brightness(0) invert(1);
+}
+
+.logo-area h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--light-text);
+}
+
+/* FORM FIELDS AND BUTTONS */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 350px; 
+    margin-top: 150px;
+}
+
+/* Add this to your login.css */
+.login-button-link {
+    display: block; /* Makes the link take up the full width */
+    text-decoration: none; /* Removes the default blue underline */
+    margin-top: 0px; /* Optional: Adds some space above the button */
+    width: 100%;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    background: var(--input-bg);
+    border-radius: 30px;
+    padding: 10px 20px;
+    /* White outline for the input fields */
+    border: 1px solid rgba(255, 255, 255, 0.5); 
+    backdrop-filter: blur(2px);
+}
+
+.input-group i {
+    font-size: 18px;
+    margin-right: 15px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.input-group input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    color: var(--light-text);
+    font-size: 16px;
+    padding: 5px 0;
+    outline: none;
+}
+
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.login-button {
+    background: var(--dark-green);
+    color: var(--light-text);
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+    width: 100%;
+}
+
+.login-button:hover {
+    background: #1e3a1e;
+}
+
+/* Add this to your login.css */
+
+/* 1. Crucial: Allows absolute positioning of the toggle button */
+.password-group {
+    position: relative; 
+    /* Adjust padding to make space for the button */
+    padding-right: 15px; 
+}
+
+/* 2. Style the eye icon button */
+.toggle-password {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7); /* Match icon color */
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+    margin-left: 10px; /* Space between input text and icon */
+    transition: color 0.3s;
+    outline: none; /* Remove focus outline */
+    
+    /* Position the button slightly to the right of the input text */
+    /* Use position:absolute if you want it exactly at the right edge of the white border */
+    /* For a simpler approach, we'll let it flow inline, which is why we modified padding in .password-group */
+}
+
+.toggle-password:hover {
+    color: var(--light-text);
+}
+
+/* Ensure the input field and button share space nicely */
+.password-group input {
+    flex-grow: 1; /* Input takes up available space */
+}
+
+
+/* --- VISUAL FEEDBACK FOR VALIDATION --- */
+
+/* 1. Style the input group border to be red when in error state */
+.input-group.input-error {
+    /* Use a bright red color */
+    border: 1px solid #ff4d4d; 
+}
+
+/* 2. Target the placeholder text within the error state and make it red */
+.input-group.input-error input::placeholder {
+    /* The color you want the placeholder text to turn */
+    color: #ff4d4d; 
+    /* Make it slightly brighter so it's more noticeable */
+    opacity: 1; 
+}
+
+/* 3. Target the icon within the error state and make it red */
+.input-group.input-error i {
+    color: #ff4d4d;
+}
+
+/* ======================
+    FOOTER LINKS
+====================== */
+.form-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.forgot-password {
+    color: var(--light-text);
+    text-decoration: none;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.form-footer p {
+    font-size: 15px;
+}
+
+.signup-link {
+    color: var(--main-orange);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s ease;
+}
+
+.signup-link:hover {
+    color: #ff873f;
+}

@@ -1,0 +1,625 @@
+/* --- 1. Global Setup & Variables --- */
+:root {
+    --color-dark-green: #2F4F4F;
+    --color-primary-orange: #EF6C3C;
+    --color-secondary-green: #387038;
+    --color-light-text: #FFFFFF;
+    --color-dark-text: #000000;
+    --color-light-gray: #F0F0F0;
+    --sidebar-width-collapsed: 70px;
+    --sidebar-width-expanded: 250px;
+    --color-darker-orange: #d15c2d; 
+    --color-white: #FFFFFF;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: var(--color-light-gray);
+    overflow-x: hidden;
+}
+
+/* --- 2. Dashboard Layout Structure --- */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* --- 3. Sidebar Menu (The Expanding Element) --- */
+.sidebar-menu {
+width: var(--sidebar-width-collapsed);
+background-color: #2a3d32;
+color: var(--color-light-text);
+flex-shrink: 0;
+transition: width 0.3s ease;
+display: flex;
+flex-direction: column;
+    /* FIX 1: Keep position fixed and ensure it's above everything else 
+    The 'left' position will now handle the slide-in/out motion.
+    */
+position: fixed; 
+height: 100%;
+top: 0;
+left: 0; 
+z-index: 200; /* High z-index to overlap header and content */
+}
+/* ------------------------------------------------------------------- */
+/* 3.1. Top Toggle Button Container (Handles ☰ when collapsed) */
+/* ------------------------------------------------------------------- */
+.sidebar-toggle-top {
+    position: relative; 
+    padding: 15px 0;
+    text-align: center;
+    height: 60px; 
+}
+
+.sidebar-toggle-top button {
+background: none;
+border: none;
+color: var(--color-light-text);
+font-size: 24px;
+cursor: pointer;
+padding: 10px;
+transition: opacity 0.1s;
+}
+
+.sidebar-toggle-top .close-menu-btn {
+display: none; 
+position: absolute;
+top: 15px; 
+right: 20px;
+font-size: 20px;
+padding: 0; 
+line-height: 1;
+z-index: 10;
+}
+
+/* --------------------------------------------------------------- */
+/* 3.2. Sidebar Header (Organization details, logo/text content) */
+/* --------------------------------------------------------------- */
+.sidebar-header {
+    /* Default state: hidden (to show ☰) */
+    padding: 0 20px 20px;
+    opacity: 0;
+    max-height: 0; 
+    overflow: hidden;
+    transition: opacity 0.3s ease 0.1s, max-height 0.3s ease;
+    
+    /* Flex container setup for the expanded state */
+    display: flex;
+    align-items: center; /* Vertically center Paw Icon with text block */
+    justify-content: flex-start;
+    height: 60px;
+}
+
+.sidebar-header .organization-info {
+    /* Contains Paw Icon + stacked text */
+    display: flex;
+    flex-direction: row; /* Paw icon and text block side-by-side */
+    align-items: center; 
+    gap: 10px;
+    padding: 0; 
+    margin-top: -27px;
+}
+
+.sidebar-header .paw-icon {
+    font-size: 32px;
+    margin: 0; 
+    flex-shrink: 0;
+}
+
+/* Wrapper for stacked text (Paws4Cause and Organization) */
+.sidebar-header .text-content {
+    display: flex;
+    flex-direction: column; /* Stacks Paws4Cause above Organization */
+    line-height: 1.2;
+}
+
+.sidebar-header .organization-info p {
+    font-size: 16px; 
+    font-weight: bold;
+    margin: 0;
+}
+
+.sidebar-header .organization-info small {
+    font-size: 12px;
+    opacity: 0.8;
+    margin: 0;
+}
+
+/* --- 3.3. Navigation Items (List) --- */
+.sidebar-navigation {
+    flex-grow: 1; 
+}
+
+.sidebar-navigation ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-navigation li {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    white-space: nowrap; 
+    position: relative;
+    transition: background-color 0.3s ease, margin-right 0.3s ease;
+}
+
+.sidebar-navigation li.active {
+    background-color: var(--color-primary-orange);
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    margin-right: -1px;
+}
+
+.sidebar-navigation .nav-icon {
+    display: block; 
+    padding: 10px 0; 
+    font-size: 25px; 
+    line-height: 0;
+    min-width: 30px; 
+    text-align: center;
+    filter: drop-shadow(0 0 1px rgba(0,0,0,0.5)) brightness(1.2);
+    color: var(--color-light-text); 
+}
+
+.sidebar-navigation a {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    text-decoration: none;
+    color: var(--color-light-text);
+    margin-left: 15px;
+    font-size: 16px;
+}
+
+/* --- EXPANDED MENU STATE (Triggered by JavaScript) --- */
+.sidebar-menu.expanded {
+    width: var(--sidebar-width-expanded);
+}
+
+/* Button Swap Logic */
+.sidebar-menu.expanded .sidebar-toggle-top .menu-toggle {
+    display: none; 
+}
+
+.sidebar-menu.expanded .sidebar-toggle-top .close-menu-btn {
+    display: block; 
+}
+
+.sidebar-menu.expanded .sidebar-header {
+    /* Show the header when expanded */
+    opacity: 1;
+    max-height: 200px;
+    
+    /* Add top padding to create space below the X button, and add a bottom border */
+    padding: 15px 20px 20px; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+    
+    /* Push logo/text left to avoid collision with the absolutely positioned 'X' button */
+    margin-right: 40px; 
+}
+
+.sidebar-menu.expanded .sidebar-navigation li {
+    justify-content: flex-start; 
+    padding: 15px 20px;
+}
+
+.sidebar-menu.expanded .sidebar-navigation .nav-icon {
+    display: inline-block;
+    padding: 0; 
+}
+
+.sidebar-menu.expanded .sidebar-navigation a {
+    opacity: 1; 
+    pointer-events: auto;
+}
+
+/* ========================================================= */
+/* --- 4. DASHBOARD HEADER STYLES (New/Adjusted) --- */
+/* ========================================================= */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px; /* Reduced padding for a thinner look */
+    height: 90px; /* Set height to be consistent */
+    padding: 15px 40px; /* Sufficient horizontal padding */
+    /* White background */
+    border-bottom: 2px solid var(--color-dark-text); /* black line below header */
+    /* Make the header translucent/transparent to show the wrapper background */
+    background-color: var(--color-white);
+    
+}
+
+.welcome-section {
+    display: flex;
+    align-items: center;
+    color: var(--color-dark-text);
+}
+
+.welcome-section p {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 5px;
+}
+.welcome-section .text-group {
+    display: flex;
+    flex-direction: column; /* Stacks the welcome lines */
+}
+
+.welcome-section h1 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.user-info-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-profile-summary {
+    display: flex;
+    align-items: center;
+    background-color: #2a3d32; /* Dark Green background for user chip */
+    color: var(--color-light-text);
+    padding: 8px 15px;
+    border-radius: 25px;
+}
+
+.user-profile-summary .profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.user-details {
+    line-height: 1.2;
+}
+
+.user-details .user-name {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.user-details .user-stats {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.notification-btn, .search-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--color-dark-text);
+}
+
+/* ========================================================= */
+/* --- 5. MAIN CONTENT AREA STYLES (New/Adjusted) --- */
+/* ========================================================= */
+.main-content-area {
+    padding: 30px;
+    background-color: var(--color-light-gray);
+    background-image: url('home.jpg'); 
+    /* CRITICAL FIX: Shifts the background image up by 15px */
+    background-position: fixed; 
+    /* The first value (0px) is horizontal, the second (-15px) is vertical. 
+       Use negative value to move it UP. */
+    background-attachment: fixed;
+}
+
+/* Wrapper for the header and main content next to the sidebar (NEW) */
+.main-content-wrapper { 
+    display: flex;
+    flex-direction: column; /* Stacks header above main content */
+    /* Crucial: Takes up all remaining horizontal width */
+    flex-grow: 1; 
+    min-width: 0;
+    /* FIX 2: This is the key change. We now keep a fixed margin for the collapsed state, 
+       but we remove the expansion logic because the sidebar is now overlapping. */
+    margin-left: var(--sidebar-width-collapsed); 
+    transition: margin-left 0.3s ease;
+}
+
+.main-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 0px;
+    margin-left: 28px;
+}
+.main-row-2 {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+/* --- Card Styles (Containers for content) --- */
+.adoption-card, .trending-card, .upgrade-card {
+    border-radius: 15px;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.trending-content-card {
+    padding: 10px;
+}
+
+
+/* --- REUSABLE DESIGN LINE STYLE (POSITIONED OUTSIDE) --- */
+.card-with-separator {
+    position: relative;
+    /* No extra padding needed here; the line is now outside */
+}
+        
+.card-with-separator::after {
+    content: '';
+    position: absolute;
+    /* Pushes the line 15px below the card's bottom border/edge */
+    bottom: -15px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px; 
+    height: 3px;
+    background-color: var(--color-dark-text); /* Default: Black for light backgrounds */
+    border-radius: 2px;
+    display: block; 
+    z-index: 1; /* Keep it below any card content just in case */
+}
+        
+/* Override for dark background cards (Adoption and Upgrade) - use White line */
+.adoption-card.card-with-separator::after, 
+.upgrade-card.card-with-separator::after {
+    background-color: var(--color-white);
+}
+        /* ----------------------------------------------------- */
+
+
+.adoption-card {
+    flex-basis: 68%; 
+    background-color: var(--color-secondary-green);
+    color: var(--color-light-text);
+    min-height: 250px; /* Example height for visibility */
+    display: flex;
+    flex-direction: column;
+    /* BACKGROUND IMAGE PROPERTIES */
+    background-image: url('dog1.png'); 
+    background-size: cover; /* Make the image fill the card */
+    background-position: center bottom; /* Position pets visible at the bottom */
+    background-repeat: no-repeat;
+    
+    /* Ensure text is readable over the image */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    /* Set a dark fallback color/overlay if image fails to load */
+    background-color: #2a3d32;
+    border: 2px solid #040404;
+    position: relative;
+    
+}
+
+.card-header-row {
+    display: flex;
+    justify-content: space-between; /* Pushes the h2 and button to the far ends */
+    align-items: center; /* Vertically centers the text and button */
+    width: 100%; /* Ensure it spans the full width of the card */
+    margin-bottom: 10px; /* Add some space below the header row */
+    padding: 0;
+    
+}
+
+.adoption-card h2 {
+    font-size: 28px;
+    font-weight: bold;
+    line-height: 1.2;
+    margin-bottom: 10px;
+}
+
+
+.upgrade-card {
+    flex-basis: 68%;
+    min-height: 300px;
+    background-color: #bb4706;
+    color: var(--color-light-text);
+    padding: 30px;
+    background-image: url('dog3.png'); 
+    background-position: right calc(100% + 50px); /* Position the paw slightly to the right */
+    background-repeat: no-repeat;
+    background-size: 420px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #040404;
+    margin-top: -168px;
+}
+
+
+
+.upgrade-card p {
+    font-size: 0.9em; /* Adjust size, slightly smaller than body text */
+    color: rgba(255, 255, 255, 0.8); /* Slightly transparent white for subtext */
+    margin-bottom: 25px; /* Space between paragraph and button */
+    line-height: 1.5; /* Good line height for readability */
+    max-width: 60%; /* Constrain width to prevent text from overlapping the paw */
+}
+
+.upgrade-card h1 {
+    /* Adjust font size to make it bigger */
+    font-size: 2.2em; /* Or use a fixed pixel value like 36px-40px if preferred */
+    
+    /* Change color to a lighter, possibly yellow-orange tone as in the reference */
+    color: var(--color-light-orange); /* Assuming you have this variable, or use #FFD700 for gold */
+    
+    font-weight: bold; /* Ensure it's bold */
+    margin-bottom: 10px; /* Space between title and paragraph */
+    line-height: 1.2; /* Adjust line height for better readability if multi-line */
+    max-width: 350px;
+    
+}
+
+.trending-section {
+    flex-basis: 30%; /* Trending section takes less space */
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* The Green Button/Header */
+.trending-updates-btn {
+    display: block;
+    background-color: #0F5E2E; /* Dark Green matching the header in the image */
+    color: var(--color-light-text);
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none; 
+    border-radius: 15px 15px 15px 15px; 
+    cursor: pointer;
+    margin-bottom: 30px; /* Align perfectly with the card border */
+    z-index: 10; 
+    border: 2px solid #040404;
+    
+}
+
+/* The Main Card Container */
+.trending-content-card {
+    background: var(--color-white); 
+    border-radius: 15px;
+    padding: 8px; /* Inner padding creates the white frame/border effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid #040404; /* Subtle border for definition */
+    flex-grow: 1; /* Makes the card expand to match the height of the adoption card */
+}
+
+/* Image Wrapper (Handles the actual image and rounded corners) */
+.card-image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%; 
+    min-height: 250px; /* Ensure a minimum height if the adjacent card is short */
+    border-radius: 15px; 
+    overflow: hidden; 
+    /* Inner shadow/border effect */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+.trending-image {
+    width: 100%;
+    height: 100%; 
+    display: block;
+    object-fit: cover; 
+    border: 2px solid #040404;
+}
+
+/* Text Overlay and Navigation Arrows */
+.card-text-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    padding-top: 50px; 
+    color: var(--color-light-text);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.0)); 
+}
+
+.card-text-overlay p {
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: 600; 
+    line-height: 1.2;
+}
+
+.card-text-overlay small {
+    display: block;
+    font-size: 0.9em;
+    opacity: 0.8;
+    margin-top: 5px;
+}
+
+.adoption-card .nav-arrow,
+.card-image-wrapper .nav-arrow { 
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none; 
+    color: var(--color-light-text);
+    border: none;
+    font-size: 2em; 
+    padding: 5px 10px;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.6; 
+    transition: opacity 0.2s;
+}
+
+.nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    
+}
+
+.nav-arrow:hover {
+    opacity: 1;
+    background-color: var(--color-primary-orange);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.left-arrow {
+    left: 5px;
+}
+
+.right-arrow {
+    right: 5px;
+}
+
+/* ========================================================= */
+/* --- 6. ACTION BUTTON STYLES (NEW SECTION) --- */
+/* ========================================================= */
+.action-btn-orange, .action-btn-dark {
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+    text-decoration: none;
+}
+
+/* Button for the Adoption Card (Orange background) */
+.action-btn-orange {
+    background-color: var(--color-primary-orange);
+    color: var(--color-light-text);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Button for the Upgrade Card (Darker background) */
+.action-btn-dark {
+    background-color:  #2a3d32; /* Use the new dark orange variable */
+    color: var(--color-light-text);
+    max-width: 200px; /* Example width, adjust as needed */
+    background-color: #2a3d32; 
+    color: var(--color-light-text);
+}
+
+.action-btn-orange:hover, .action-btn-dark:hover {
+    filter: brightness(1.1);
+}

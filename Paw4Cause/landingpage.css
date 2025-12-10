@@ -1,0 +1,263 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+body {
+    color: #ffffff;
+    background-color: #2a3535; 
+    
+    /* Ensures proper layout structure */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ======================
+    NAVIGATION / HEADER
+====================== */
+header {
+    width: 100%;
+    height: 90px;
+    padding: 0 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+/* LOGO + TEXT */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    height: 28px;
+    width: auto;
+}
+
+.logo h2 {
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* CENTER NAV LINKS */
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    gap: 90px;
+}
+
+nav ul li {
+    font-size: 15px;
+    color: #dadada;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+nav ul li:hover {
+    color: #ffffff;
+}
+
+/* LOGIN + SIGNUP */
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    font-size: 15px;
+    border-left: 1px solid #f27024;
+    padding-left: 100px;
+}
+
+.auth-buttons .login-link {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.auth-buttons .signup-button {
+    background: #f27024;
+    padding: 10px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.25s ease;
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.auth-buttons .signup-button:hover {
+    background: #ff873f;
+}
+
+/* ======================
+    HERO SECTION
+====================== */
+.hero {
+    /* --- FIX 2: Background image applied ONLY to the Hero section --- */
+    background: url("landingpage_pic.jpg") no-repeat;
+    background-size: cover;
+    background-position: 1% bottom;
+    
+    padding: 100px 50px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Adjusted min-height to ensure the hero area extends down to the features */
+    min-height: 0vh; 
+    position: relative;
+    flex-grow: 1; 
+}
+
+/* LEFT SIDE TEXT */
+.hero-text {
+    max-width: 600px;
+}
+
+.hero h1 {
+    font-size: 46px;
+    font-weight: 700;
+    margin-top: 40px;
+}
+
+.hero ul {
+    list-style: none;
+    margin-top: 30px;
+}
+
+.hero ul li {
+    font-size: 18px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.hero ul li::before {
+    content: "✔";
+    color: #ffb431;
+    font-size: 20px;
+}
+
+/* HERO BUTTONS */
+.hero-buttons {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+}
+
+.hero-buttons button {
+    padding: 12px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.hero-buttons button:first-child {
+    background: #ff7b2f;
+    color: #fff;
+}
+
+.hero-buttons button:last-child {
+    background: #004d2a;
+    color: #fff;
+}
+
+
+/* ======================
+    FEATURE BOXES (Structure left as requested)
+====================== */
+
+.features {
+    /* Added white background to features container */
+    background: #ffffff; 
+    color: #333;
+    padding: 50px 80px;
+    display: flex;
+    flex-wrap: wrap;
+    position: static; 
+}
+
+/* Left: White feature boxes container (KEEPING ABSOLUTE POSITIONING AS REQUESTED) */
+.features-left {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    align-items: flex-end; 
+    /* Original absolute positioning KEPT */
+    position: absolute;
+    left: 0.09%;
+    right: 32.36%;
+    top: 80.65%;
+    bottom: 0%;
+}
+
+.features-left > div {
+    background: #ffffff; 
+    padding: 1em;
+    border-radius: 0px;
+    flex: 1 1 100px; 
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.features-left > div img {
+    display: flex;
+    height: 90px;
+    align-items: flex-end;
+}
+
+/* Right: Green 'Learn more' box (KEEPING ABSOLUTE POSITIONING AS REQUESTED) */
+.features-right {
+    background: #2a542a; 
+    padding: 1em;
+    margin-top: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0;
+    /* Original absolute positioning KEPT */
+    position: absolute;
+    left: 67.64%;
+    right: 0%;
+    top: 81.80%;
+    bottom: 0%;
+}
+
+/* Green 'Learn more' Button Styling and Alignment */
+.features-right > a {
+    background: transparent; 
+    color: #fff;
+    padding: 20px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 180px;
+    transition: 0.3s;
+}
+
+.features-right:hover {
+    background: #1e3a1e; 
+}
+
+

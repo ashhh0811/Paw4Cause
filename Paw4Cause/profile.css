@@ -1,0 +1,852 @@
+/* --- 1. Global Setup & Variables --- */
+:root {
+    --color-dark-green: #2F4F4F;
+    --color-primary-orange: #EF6C3C;
+    --color-secondary-green: #387038;
+    --color-light-text: #FFFFFF;
+    --color-dark-text: #000000;
+    --color-light-gray: #F0F0F0;
+    --sidebar-width-collapsed: 70px;
+    --sidebar-width-expanded: 250px;
+    --color-white: #FFFFFF;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: var(--color-light-gray);
+    overflow-x: hidden;
+    background-image: url(profile.jpg);
+    background-size: cover;
+    background-position: fill;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: var(--color-light-gray);
+}
+
+/* --- 2. Dashboard Layout Structure --- */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- 3. Sidebar Menu (The Expanding Element) --- */
+.sidebar-menu {
+    position: fixed; 
+    top: 0; 
+    height: 100vh; 
+    width: var(--sidebar-width-collapsed);
+    background-color: #2a3d32;
+    color: var(--color-light-text);
+    flex-shrink: 0;
+    transition: width 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+}
+
+/* ------------------------------------------------------------------- */
+/* 3.1. Top Toggle Button Container (Handles ☰ when collapsed) */
+/* ------------------------------------------------------------------- */
+.sidebar-toggle-top {
+    position: relative; 
+    padding: 15px 0;
+    text-align: center;
+    height: 60px; 
+}
+
+.sidebar-toggle-top button {
+    background: none;
+    border: none;
+    color: var(--color-light-text);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    transition: opacity 0.1s;
+}
+
+.sidebar-toggle-top .close-menu-btn {
+    display: none; 
+    position: absolute;
+    top: 15px; 
+    right: 20px;
+    font-size: 20px;
+    padding: 0; 
+    line-height: 1;
+    z-index: 10;
+}
+
+/* --------------------------------------------------------------- */
+/* 3.2. Sidebar Header (Organization details, logo/text content) */
+/* --------------------------------------------------------------- */
+.sidebar-header {
+    padding: 0 20px 20px;
+    opacity: 0;
+    max-height: 0; 
+    overflow: hidden;
+    transition: opacity 0.3s ease 0.1s, max-height 0.3s ease;
+    display: flex;
+    align-items: center; 
+    justify-content: flex-start;
+    height: 60px;
+}
+
+.sidebar-header .organization-info {
+    display: flex;
+    flex-direction: row; 
+    align-items: center; 
+    gap: 10px;
+    padding: 0; 
+    margin-top: -27px;
+}
+
+.sidebar-header .paw-icon {
+    font-size: 32px;
+    margin: 0; 
+    flex-shrink: 0;
+}
+
+/* Wrapper for stacked text (Paws4Cause and Organization) */
+.sidebar-header .text-content {
+    display: flex;
+    flex-direction: column; 
+    line-height: 1.2;
+}
+
+.sidebar-header .organization-info p {
+    font-size: 16px; 
+    font-weight: bold;
+    margin: 0;
+}
+
+.sidebar-header .organization-info small {
+    font-size: 12px;
+    opacity: 0.8;
+    margin: 0;
+}
+
+/* --- 3.3. Navigation Items (List) --- */
+.sidebar-navigation {
+    flex-grow: 1; 
+}
+
+.sidebar-navigation ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-navigation li {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    white-space: nowrap; 
+    position: relative;
+    transition: background-color 0.3s ease, margin-right 0.3s ease;
+}
+
+.sidebar-navigation li.active {
+    background-color: var(--color-primary-orange);
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    margin-right: -1px;
+}
+
+.sidebar-navigation .nav-icon {
+    display: block; 
+    padding: 10px 0; 
+    font-size: 25px; 
+    line-height: 0;
+    min-width: 30px; 
+    text-align: center;
+    filter: drop-shadow(0 0 1px rgba(0,0,0,0.5)) brightness(1.2);
+    color: var(--color-light-text); 
+}
+
+.sidebar-navigation a {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    text-decoration: none;
+    color: var(--color-light-text);
+    margin-left: 15px;
+    font-size: 16px;
+}
+
+/* --- EXPANDED MENU STATE (Triggered by JavaScript) --- */
+.sidebar-menu.expanded {
+    width: var(--sidebar-width-expanded);
+}
+
+.sidebar-menu.expanded .sidebar-toggle-top .menu-toggle {
+    display: none; 
+}
+
+.sidebar-menu.expanded .sidebar-toggle-top .close-menu-btn {
+    display: block; 
+}
+
+.sidebar-menu.expanded .sidebar-header {
+    opacity: 1;
+    max-height: 200px;
+    padding: 15px 20px 20px; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+    margin-right: 40px; 
+}
+
+.sidebar-menu.expanded .sidebar-navigation li {
+    justify-content: flex-start; 
+    padding: 15px 20px;
+}
+
+.sidebar-menu.expanded .sidebar-navigation .nav-icon {
+    display: inline-block;
+    padding: 0; 
+}
+
+.sidebar-menu.expanded .sidebar-navigation a {
+    opacity: 1; 
+    pointer-events: auto;
+}
+
+/* ========================================================= */
+/* --- 4. DASHBOARD HEADER STYLES (New/Adjusted) --- */
+/* ========================================================= */
+.dashboard-header {
+    position: fixed; 
+    top: 0; 
+    left: var(--sidebar-width-collapsed); 
+    width: calc(100% - var(--sidebar-width-collapsed));
+    z-index: 10; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px; 
+    height: 90px; 
+    border-bottom: 2px solid var(--color-dark-text); 
+    background-color: var(--color-white);
+    height: 90px;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    color: var(--color-dark-text);
+}
+
+.profile-section p {
+    font-size: 14px;
+    opacity: 0.7;
+    margin-bottom: 5px;
+}
+.profile-section .text-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.profile-section h1 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.user-info-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-profile-summary {
+    display: flex;
+    align-items: center;
+    background-color: #2a3d32; 
+    color: var(--color-light-text);
+    padding: 8px 15px;
+    border-radius: 25px;
+}
+
+.user-profile-summary .profile-pic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.user-details {
+    line-height: 1.2;
+}
+
+.user-details .user-name {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.user-details .user-stats {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+.notification-btn, .search-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--color-dark-text);
+}
+
+.main-content-wrapper {
+    flex-grow: 1; 
+    display: flex;
+    flex-direction: column; 
+    min-width: 0;
+    margin: auto;
+    margin-left: calc(var(--sidebar-width-collapsed) + 40px);
+    margin-right: auto;
+    transition: margin-left 0.3s ease; /* Keep the transition */
+}
+
+.main-row {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 0px;
+}
+.main-row-2 {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.main-content-area {
+    padding: 20px 0px;
+    flex-grow: 1; 
+    width: 100%; 
+    display: flex;
+    justify-content: center; 
+    align-items: flex-start; 
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* ========================================================= */
+/* --- 5. MAIN PROFILE CONTENT STYLES --- */
+/* ========================================================= */
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Space between the header card, grid, and achievements */
+    width: 100%;
+    margin-top: 100px;
+    /* The background image already covers the body, but the card design needs 
+       the internal gradient shown in the second image's main area. 
+       This CSS assumes the visual background gradient/dots are handled by the HTML structure/body image. */
+    padding-left: 40px;
+    padding-right:40px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+/* Base Card Styling */
+.card {
+    background-color: var(--color-white);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* ------------------------------------------------------------------- */
+/* 5.1. Profile Header Card (Top Green Area) */
+/* ------------------------------------------------------------------- */
+.profile-header-card {
+    /* Mimic the dark green header area from the image */
+    background-color: #00532b; /* Use a similar dark green */
+    color: var(--color-light-text);
+    padding: 30px 40px;
+    border-radius: 15px;
+    border: 3px solid var(--color-dark-text);
+}
+
+.profile-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.profile-img-container {
+    /* Container for the circular image with the white background */
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-right: 20px;
+}
+
+.main-profile-pic {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    /* Place the image above the green background, no border needed as the white container acts as the border */
+}
+
+.profile-text {
+    flex-grow: 1;
+    margin-right: auto; /* Pushes the button to the right */
+}
+
+.profile-text h2 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.profile-text .member-since {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.edit-profile-btn {
+    background-color: #f75c00;
+    color: var(--color-light-text);
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    flex-shrink: 0;
+    border: 2px solid var(--color-dark-text);
+    text-decoration: none;
+}
+
+.edit-profile-btn:hover {
+    background-color: #d95d32;
+}
+
+/* Profile Tags (Active Donor, Animal Lover, etc.) */
+.profile-tags {
+    display: flex;
+    gap: 10px;
+    padding-left: 110px; /* Align tags with the name/text, matching the image offset */
+}
+
+/* Change this existing block: */
+.tag-btn {
+    background: #3f6850; /* New: Use a slightly lighter green/grey background */
+    color: var(--color-light-text);
+    border: none; /* New: Remove the border */
+    padding: 8px 20px; /* New: Slightly larger padding to match button feel */
+    border-radius: 50px;
+    font-size: 14px;
+    cursor: default; 
+    font-weight: 600; /* New: Added font weight for prominence */
+    transition: background-color 0.2s;
+}
+
+.tag-btn {
+    /* Change background to your primary orange */
+    background-color: #f75c00; 
+    color: var(--color-light-text);
+    border: none; /* Remove the border */
+    padding: 8px 20px; /* Slightly adjusted padding for button feel */
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600; /* Make text bolder */
+    
+    /* NEW: Change cursor to indicate interactivity/pressable state */
+    cursor: pointer; 
+    transition: background-color 0.2s;
+    border: 2px solid var(--color-dark-text);
+}
+
+/* Optional: Add hover state for interactivity feedback */
+.tag-btn:hover {
+    background-color: #d95d32; /* Slightly darker orange on hover */
+}
+
+/* ------------------------------------------------------------------- */
+/* 5.2. Profile Content Grid (Contact, Stats, Activity) */
+/* ------------------------------------------------------------------- */
+.profile-content-grid {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.left-column {
+    flex-basis: 30%; /* Adjust width for the left column */
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    
+}
+
+.right-column {
+    flex-basis: 70%; /* Adjust width for the right column */
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    
+}
+/* Contact Info */
+.contact-info-card {
+    /* Since this card shares space with the membership card, 
+       it needs to be defined as a standalone card. 
+       We will add a new selector for it: */
+    background-color: var(--color-white);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    
+    /* ADD THE BORDER HERE: */
+    border: 3px solid var(--color-dark-text); 
+}
+/* Contact Info */
+.contact-info-card h3, .membership-status-card h3, .recent-activity-card h3 {
+    color: var(--color-dark-text);
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.contact-info-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-info-card li {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    border-left: 3px solid var(--color-primary-orange); /* Mimic the orange dots/line */
+    padding-left: 15px;
+    position: relative;
+}
+
+.contact-info-card li::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: -6px; /* Position the dot over the line */
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-primary-orange);
+    border-radius: 50%;
+}
+
+.contact-info-card li span {
+    font-weight: bold;
+    font-size: 14px;
+    color: #4a4a4a;
+}
+
+.contact-info-card li p {
+    font-size: 14px;
+    margin-top: 3px;
+    color: var(--color-dark-text);
+    
+}
+
+.contact-info-card li .fas {
+    /* Hide Font Awesome icons as the design uses the dot/line combo */
+    display: none; 
+    
+}
+
+
+/* Membership Status */
+.membership-status-card {
+    text-align: center;
+    border: 3px solid var(--color-dark-text);
+
+}
+
+.status-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 16px;
+    padding: 0 10px;
+    
+}
+
+.status-details .balance-amount {
+    font-weight: bold;
+    color: var(--color-secondary-green);
+}
+
+.member-status {
+    font-weight: bold;
+}
+
+.upgrade-btn {
+    width: 100%;
+    background-color: #f75e00;
+    color: #fded8f;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.2s;
+    border: 2px solid var(--color-dark-text);
+
+}
+
+.upgrade-btn:hover {
+    background-color: #d95d32;
+}
+
+/* Key Stats Row */
+.stats-row {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+  
+}
+
+.stat-box {
+    background-color: var(--color-white);
+    border: 1px solid var(--color-light-gray);
+    border-radius: 15px;
+    padding: 20px 15px;
+    text-align: center;
+    flex: 1; /* Makes all boxes equal width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+    border: 3px solid var(--color-dark-text);
+
+}
+
+.stat-box .icon {
+    font-size: 24px;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.stat-box .stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 5px 0;
+    color: #2a3d32; /* Dark color for emphasis */
+}
+
+.stat-box .stat-label {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Recent Activity */
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 8px 0;
+    cursor: pointer;
+    text-align: left;
+    border-bottom: 1px solid var(--color-light-gray); /* Separator line */
+    transition: background-color 0.2s;
+}
+
+.activity-item:hover {
+    background-color: #f9f9f9;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-item > div {
+    flex-grow: 1;
+    margin-left: 15px;
+    min-height: 35px; /* Adjust this value to fit the tallest content */
+    display: flex;
+    min-height: 35px;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.activity-item p {
+    font-weight: 600;
+    font-size: 15px;
+    margin: 0;
+}
+
+.activity-item small {
+    font-size: 12px;
+    color: #888;
+}
+
+.activity-item .date {
+    font-size: 12px;
+    color: #888;
+    flex-shrink: 0;
+}
+
+.activity-item .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Recent Activity Card (Add this new block if it doesn't exist) */
+.recent-activity-card {
+    /* Inherits styling from .card (background, padding, etc.) */
+    
+    /* ADD THE BORDER HERE: */
+    border: 3px solid var(--color-dark-text); 
+}
+.activity-item .dot.orange { background-color: var(--color-primary-orange); }
+.activity-item .dot.red { background-color: #E74C3C; }
+.activity-item .dot.green { background-color: var(--color-secondary-green); }
+
+
+/* ------------------------------------------------------------------- */
+/* 5.3. Achievements Section (Bottom Row) */
+/* ------------------------------------------------------------------- */
+.achievements-card {
+    /* Style the background of the card to match the dark green in the image */
+    background-color: #00532b;
+    color: var(--color-light-text);
+    border: 3px solid var(--color-dark-text);
+}
+
+.achievements-card h3 {
+    color: var(--color-light-text);
+    margin-bottom: 20px;
+}
+
+.achievements-scroll-container {
+    display: flex;
+    align-items: center;
+    overflow: hidden; /* Hide arrows on the HTML implementation if they're not needed for scrolling */
+    padding: 0px 0px;
+}
+
+.achievements-list {
+    flex-grow: 1;
+    display: flex;
+    gap: 10px;
+    /* Allows content to overflow horizontally and enables manual scrolling */
+    overflow-x: auto; 
+    padding: 10px 0; /* Add vertical padding for visibility of scrollbar/shadows */
+    -webkit-overflow-scrolling: touch; /* for smoother scrolling on touch devices */
+}
+
+
+/* Hide the scrollbar, but keep scrolling functionality */
+.achievements-list::-webkit-scrollbar {
+    display: none;
+}
+.achievements-list {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.achievement-item {
+    /* Style for the yellow/light-colored achievement box */
+    min-width: 140px; /* Define width to enable scrolling */
+    background-color:#fded8f; /* Gold/Yellow color from the image */
+    color: var(--color-dark-text);
+    border: none;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    flex-shrink: 0; /* Important: Prevents items from shrinking */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 3px solid var(--color-dark-text);
+}
+
+.achievement-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.achievement-item .icon {
+    font-size: 30px;
+    margin-bottom: 10px;
+    display: block;
+    filter: drop-shadow(0 0 1px rgba(0,0,0,0.5));
+}
+
+.achievement-item p {
+    font-weight: bold;
+    font-size: 15px;
+    margin: 5px 0;
+}
+
+.achievement-item small {
+    font-size: 12px;
+    color: #666;
+}
+
+/* Scroll Arrows */
+.scroll-arrow {
+    background: rgba(0, 0, 0, 0.3);
+    color: var(--color-light-text);
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 5; /* Ensure arrows are above the achievement items */
+    transition: background-color 0.2s;
+    font-size: 18px;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.scroll-arrow:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.left-arrow {
+    margin-right: 10px;
+}
+
+.right-arrow {
+    margin-left: 10px;
+}
+
+/* ========================================================= */
+/* --- 6. EXPANDED DASHBOARD STATE (Adjustment for content) --- */
+/* ========================================================= */
+.dashboard-container.expanded .dashboard-header {
+    left: var(--sidebar-width-expanded);
+    width: calc(100% - var(--sidebar-width-expanded));
+    transition: left 0.3s ease, width 0.3s ease;
+}
+
+.dashboard-container.expanded .main-content-wrapper {
+    margin-left: calc(var(--sidebar-width-expanded) + 40px);
+    transition: margin-left 0.3s ease;
+}

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Paw4Cause</title>
+        <link rel="stylesheet" href="setting.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    </head>
+    <body>
+
+        <div class="dashboard-container">
+
+            <aside class="sidebar-menu">
+            
+                <div class="sidebar-toggle-top">
+                    <button class="menu-toggle">☰</button>
+                    <button class="close-menu-btn">X</button>
+                </div>
+            
+                <div class="sidebar-header">
+                    <div class="organization-info">
+                        <span class="paw-icon">🐾</span>
+                    
+                        <div class="text-content">
+                            <p>Paws4Cause</p>
+                            <small>Organization</small>
+                        </div>
+                    
+                    </div>
+                </div>
+            
+                <nav class="sidebar-navigation">
+                    <ul>
+        
+                        <li><span class="nav-icon">🏠</span> <a href="home.html">Home</a> </li>
+                        <li><span class="nav-icon">▶</span> <a href="watchvideos.html">Watch Videos</a></li>
+                        <li><span class="nav-icon">$</span> <a href="donate.html">Donate</a></li>
+                        <li><span class="nav-icon">🐾</span> <a href="adopt.html">Adopt</a></li>
+                        <li><span class="nav-icon">🏆</span> <a href="leaderboard.html">Leaderboard</a></li>
+                        <li class="section-separator"></li>
+                        <li><span class="nav-icon">👤</span> <a href="profile.html">Profile</a></li>
+                        <li><span class="nav-icon">⚙️</span> <a href="setting.html">Settings</a></li>
+                        <li><span class="nav-icon">🚪</span> <a href="#">Log Out</a></li>
+                        <li><span class="nav-icon">❓</span> <a href="#">Help</a></li>
+                    </ul>
+                </nav>
+
+            </aside>
+
+            <div class="main-content-wrapper"> 
+            
+                <header class="dashboard-header">
+                    <div class="setting-section"> 
+                        <div class="text-group"> 
+                            <p>Setting</p>
+                            <h1>Manage your account and preferences</h1>
+                        </div>
+                    </div>
+
+                    <div class="user-info-section">
+                        <div class="user-profile-summary">
+                            <img src="alliah_profile.jpg" alt="Profile Picture of Alliah Cervantes" class="profile-pic">
+                            <div class="user-details">
+                                <p class="user-name">Alliah Cervantes</p>
+                                <p class="user-stats">$207.06 | Member</p>
+                            </div>
+                        </div>
+                        <button class="notification-btn">🔔</button>
+                        <button class="search-btn">🔍</button>
+                    </div>
+                </header>
+
+                <main class="settings-content">
+                    <div class="settings-grid">
+                        
+                        <nav class="settings-sidebar">
+                            <ul>
+                                <li class="active-setting"><span class="icon">👤</span> Account</li>
+                                <li><span class="icon">🔔</span> Notifications</li>
+                                <li><span class="icon">🔒</span> Privacy</li>
+                                <li><span class="icon">⚙️</span> Preferences</li>
+                                <li><span class="icon">🧾</span> Billing</li>
+                                <li><span class="icon">❓</span> Support</li>
+                            </ul>
+                        </nav>
+                        
+                        <div class="settings-form-container">
+                            
+                            <section class="account-info-card">
+                                <h2>Account Information</h2>
+                                <form>
+                                    <div class="form-group-row">
+                                        <div class="form-group">
+                                            <label for="firstName">First Name</label>
+                                            <input type="text" id="firstName" name="firstName" value="Alliah">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastName">Last Name</label>
+                                            <input type="text" id="lastName" name="lastName" value="Cervantes">
+                                        </div>
+                                    </div>
+                                    <div class="form-group-row">
+                                        <div class="form-group">
+                                            <label for="email">Email Address</label>
+                                            <input type="email" id="email" name="email" value="alliahcervantes19@gmail.com">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Phone Number</label>
+                                            <input type="tel" id="phone" name="phone" value="(+63) 915-581-0203">
+                                        </div>
+                                    </div>
+                                    <div class="form-group-full">
+                                        <label for="address">Address</label>
+                                        <input type="text" id="address" name="address" value="Blk. 8 Lot 10 Sacop Homes, San Pablo, Magalang, Pampanga">
+                                    </div>
+                                    <div class="form-actions">
+                                        <button type="submit" class="button-save">Save Changes</button>
+                                        <button type="button" class="button-cancel">Cancel</button>
+                                    </div>
+                                </form>
+                            </section>
+
+                            <section class="change-password-card">
+                                <h2>Change Password</h2>
+                                <form>
+                                    <div class="form-group-full">
+                                        <label for="currentPassword">Current Password</label>
+                                        <input type="password" id="currentPassword" name="currentPassword">
+                                    </div>
+                                    <div class="form-group-full">
+                                        <label for="newPassword">New Password</label>
+                                        <input type="password" id="newPassword" name="newPassword">
+                                    </div>
+                                    <div class="form-group-full">
+                                        <label for="confirmNewPassword">Confirm New Password</label>
+                                        <div class="password-wrapper">
+                                            <input type="password" id="confirmNewPassword" name="confirmNewPassword">
+                                            <button type="button" class="toggle-password" id="toggleConfirmPassword">
+                                            <i class="far fa-eye"></i>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="button-update">Update Password</button>
+                                </form>
+                            </section>
+
+                            <section class="delete-account-card">
+                                <h2>Delete Account</h2>
+                                <button type="button" class="button-delete">Delete</button>
+                            </section>
+
+                        </div>
+                    </div>
+                </main>
+                </div>
+
+        </div>
+
+        <script src="setting.js"></script>
+    </body>
+</html>

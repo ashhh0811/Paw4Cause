@@ -1,0 +1,218 @@
+/* --- 1. Global Setup & Variables --- */
+:root {
+    --color-dark-green: #2F4F4F;
+    --color-primary-orange: #EF6C3C;
+    --color-secondary-green: #387038;
+    --color-light-text: #FFFFFF;
+    --color-dark-text: #000000;
+    --color-light-gray: #F0F0F0;
+    --sidebar-width-collapsed: 70px;
+    --sidebar-width-expanded: 250px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: var(--color-light-gray);
+    overflow-x: hidden;
+}
+
+/* --- 2. Dashboard Layout Structure --- */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* --- 3. Sidebar Menu (The Expanding Element) --- */
+.sidebar-menu {
+    width: var(--sidebar-width-collapsed);
+    background-color: var(--color-dark-green);
+    color: var(--color-light-text);
+    flex-shrink: 0;
+    transition: width 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ------------------------------------------------------------------- */
+/* 3.1. Top Toggle Button Container (Handles ☰ when collapsed) */
+/* ------------------------------------------------------------------- */
+.sidebar-toggle-top {
+    position: relative; 
+    padding: 15px 0;
+    text-align: center;
+    height: 60px; 
+}
+
+.sidebar-toggle-top button {
+    background: none;
+    border: none;
+    color: var(--color-light-text);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    transition: opacity 0.1s;
+}
+
+.sidebar-toggle-top .close-menu-btn {
+    /* Hiding the X button by default */
+    display: none; 
+    
+    /* Absolute position to place it on the same line as the header content */
+    position: absolute;
+    top: 15px; 
+    right: 20px;
+    font-size: 20px;
+    padding: 0; 
+    line-height: 1;
+    z-index: 10; /* Ensure it stays above the header content */
+}
+
+/* --------------------------------------------------------------- */
+/* 3.2. Sidebar Header (Organization details, logo/text content) */
+/* --------------------------------------------------------------- */
+.sidebar-header {
+    /* Default state: hidden (to show ☰) */
+    padding: 0 20px 20px;
+    opacity: 0;
+    max-height: 0; 
+    overflow: hidden;
+    transition: opacity 0.3s ease 0.1s, max-height 0.3s ease;
+    
+    /* Flex container setup for the expanded state */
+    display: flex;
+    align-items: center; /* Vertically center Paw Icon with text block */
+    justify-content: flex-start;
+    height: 60px;
+}
+
+.sidebar-header .organization-info {
+    /* Contains Paw Icon + stacked text */
+    display: flex;
+    flex-direction: row; /* Paw icon and text block side-by-side */
+    align-items: center; 
+    gap: 10px;
+    padding: 0; 
+    margin-top: -27px;
+}
+
+.sidebar-header .paw-icon {
+    font-size: 32px;
+    margin: 0; 
+    flex-shrink: 0;
+}
+
+/* Wrapper for stacked text (Paws4Cause and Organization) */
+.sidebar-header .text-content {
+    display: flex;
+    flex-direction: column; /* Stacks Paws4Cause above Organization */
+    line-height: 1.2;
+}
+
+.sidebar-header .organization-info p {
+    font-size: 16px; 
+    font-weight: bold;
+    margin: 0;
+}
+
+.sidebar-header .organization-info small {
+    font-size: 12px;
+    opacity: 0.8;
+    margin: 0;
+}
+
+/* --- 3.3. Navigation Items (List) --- */
+.sidebar-navigation {
+    flex-grow: 1; 
+}
+
+.sidebar-navigation ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-navigation li {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    white-space: nowrap; 
+    position: relative;
+    transition: background-color 0.3s ease, margin-right 0.3s ease;
+}
+
+.sidebar-navigation li.active {
+    background-color: var(--color-primary-orange);
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    margin-right: -1px;
+}
+
+.sidebar-navigation .nav-icon {
+    display: block; 
+    padding: 10px 0; 
+    font-size: 25px; 
+    line-height: 0;
+    min-width: 30px; 
+    text-align: center;
+    filter: drop-shadow(0 0 1px rgba(0,0,0,0.5)) brightness(1.2);
+    color: var(--color-light-text); 
+}
+
+.sidebar-navigation a {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    text-decoration: none;
+    color: var(--color-light-text);
+    margin-left: 15px;
+    font-size: 16px;
+}
+
+/* --- EXPANDED MENU STATE (Triggered by JavaScript) --- */
+.sidebar-menu.expanded {
+    width: var(--sidebar-width-expanded);
+}
+
+/* Button Swap Logic */
+.sidebar-menu.expanded .sidebar-toggle-top .menu-toggle {
+    display: none; 
+}
+
+.sidebar-menu.expanded .sidebar-toggle-top .close-menu-btn {
+    display: block; 
+}
+
+.sidebar-menu.expanded .sidebar-header {
+    /* Show the header when expanded */
+    opacity: 1;
+    max-height: 200px;
+    
+    /* Add top padding to create space below the X button, and add a bottom border */
+    padding: 15px 20px 20px; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); 
+    
+    /* Push logo/text left to avoid collision with the absolutely positioned 'X' button */
+    margin-right: 40px; 
+}
+
+.sidebar-menu.expanded .sidebar-navigation li {
+    justify-content: flex-start; 
+    padding: 15px 20px;
+}
+
+.sidebar-menu.expanded .sidebar-navigation .nav-icon {
+    display: inline-block;
+    padding: 0; 
+}
+
+.sidebar-menu.expanded .sidebar-navigation a {
+    opacity: 1; 
+    pointer-events: auto;
+}
